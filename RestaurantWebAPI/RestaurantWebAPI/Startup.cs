@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RestaurantWebAPI.Data;
 using Microsoft.EntityFrameworkCore;
-
+using RestaurantWebAPI.Services;
 
 namespace RestaurantWebAPI
 {
@@ -29,7 +29,10 @@ namespace RestaurantWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("LocalConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("AzureConnection")));
+
+            services.AddScoped<IFoodService, FoodService>();
+
             services.AddControllers();
         }
 

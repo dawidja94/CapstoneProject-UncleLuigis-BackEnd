@@ -11,8 +11,7 @@ namespace RestaurantWebAPI.Models.Entities
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("CustomerId")]
-        public Customer CustomerId { get; set; }
+        public Customer Customer { get; set; }
         [Required]
         public int PartySize { get; set; }
         [Required]

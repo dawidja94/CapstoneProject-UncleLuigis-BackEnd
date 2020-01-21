@@ -11,22 +11,14 @@ namespace RestaurantWebAPI.Models.Entities
     {
         [Key]
         public int Id { get; set; }
-       public int BundleId { get; set; }
-        
-        [ForeignKey("CustomerId")]
-        public int CustomerId { get; set; }
-        
-        [ForeignKey("FoodId")]
-        public Food FoodId { get; set; }
+        public int BundleId { get; set; }
+        public Customer Customer { get; set; }
+        public Food Food { get; set; }
         [Required]
-        public int FoodQuanity { get; set; }
-        [ForeignKey("BeverageID")]
-        public Beverage BeverageID { get; set; }
+        public int FoodQuantity { get; set; }
+        public Beverage Beverage { get; set; }
         [Required]
         public int BeverageQuantity { get; set; }
         public DateTime SubmissionTime { get; set; }
-
-
-
     }
 }
