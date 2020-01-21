@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dawid\\Desktop\\capstone-back-end\\RestaurantWebAPI\\RestaurantWebAPI\\RestaurantWebAPI.csproj": {}
+    "C:\\Users\\Thomas\\Documents\\Lewis University Courses\\Capstone Software Project\\capstone-back-end\\RestaurantWebAPI\\RestaurantWebAPI\\RestaurantWebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dawid\\Desktop\\capstone-back-end\\RestaurantWebAPI\\RestaurantWebAPI\\RestaurantWebAPI.csproj": {
+    "C:\\Users\\Thomas\\Documents\\Lewis University Courses\\Capstone Software Project\\capstone-back-end\\RestaurantWebAPI\\RestaurantWebAPI\\RestaurantWebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dawid\\Desktop\\capstone-back-end\\RestaurantWebAPI\\RestaurantWebAPI\\RestaurantWebAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Thomas\\Documents\\Lewis University Courses\\Capstone Software Project\\capstone-back-end\\RestaurantWebAPI\\RestaurantWebAPI\\RestaurantWebAPI.csproj",
         "projectName": "RestaurantWebAPI",
-        "projectPath": "C:\\Users\\dawid\\Desktop\\capstone-back-end\\RestaurantWebAPI\\RestaurantWebAPI\\RestaurantWebAPI.csproj",
-        "packagesPath": "C:\\Users\\dawid\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dawid\\Desktop\\capstone-back-end\\RestaurantWebAPI\\RestaurantWebAPI\\obj\\",
+        "projectPath": "C:\\Users\\Thomas\\Documents\\Lewis University Courses\\Capstone Software Project\\capstone-back-end\\RestaurantWebAPI\\RestaurantWebAPI\\RestaurantWebAPI.csproj",
+        "packagesPath": "C:\\Users\\Thomas\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Thomas\\Documents\\Lewis University Courses\\Capstone Software Project\\capstone-back-end\\RestaurantWebAPI\\RestaurantWebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\dawid\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Thomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
