@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RestaurantWebAPI.Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace RestaurantWebAPI.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions options): base(options) { }
+        public ApplicationDbContext(DbContextOptions options) : base(options) { }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Beverage> Beverages { get; set; }
         public DbSet<CarryOut> CarryOuts { get; set; }

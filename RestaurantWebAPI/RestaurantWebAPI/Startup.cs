@@ -14,6 +14,8 @@ using RestaurantWebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using RestaurantWebAPI.Services;
 using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace RestaurantWebAPI
 {
@@ -31,13 +33,17 @@ namespace RestaurantWebAPI
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("AzureConnection")));
-            
+
+            string securityKey = "this_is_our_super_long_security_key_for_token_validation_project_2018_09_07$smesk.in";
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
 
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFoodService, FoodService>();
 
             services.AddControllers();
