@@ -60,7 +60,44 @@ namespace RestaurantWebAPI.Controllers
         }
 
         // PUT: Food/UpdateFoodItem
+        [HttpPut("UpdateFoodItem")]
+        public IActionResult UpdateFoodItem(Food body)
+        {
+            var request = new UpdateFoodItemRequest
+            {
+                FoodToUpdate = body
+            };
 
+            var response = _foodservice.UpdateFoodItem(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
         // DELETE: Food/DeleteFoodItem
+        [HttpDelete("DeleteFoodItem/{id}")]
+        public IActionResult DeleteFoodItem([FromRoute]int id)
+        {
+            var request = new DeleteFoodItemRequest
+            {
+                Id = id
+            };
+            var response = _foodservice.DeleteFoodItem(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
+       
     }
 }
