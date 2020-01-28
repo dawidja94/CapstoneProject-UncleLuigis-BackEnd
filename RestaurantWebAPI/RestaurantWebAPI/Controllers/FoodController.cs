@@ -21,11 +21,11 @@ namespace RestaurantWebAPI.Controllers
         }
 
         // GET: Food/GetAllFood
+        // Tested and verified logic 1/28/2020 - Thomas
         [HttpGet("GetAllFood")]
         public IActionResult GetAllFood()
         {
             var request = new GetAllFoodMenuItemsRequest();
-
             var response = _foodservice.GetAllFoodMenuItems(request);
 
             if (response.IsSuccessful) 

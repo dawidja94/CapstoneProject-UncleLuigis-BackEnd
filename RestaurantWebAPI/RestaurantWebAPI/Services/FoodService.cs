@@ -96,6 +96,7 @@ namespace RestaurantWebAPI.Services
                 if (items != null)
                 {
                     response.IsSuccessful = true;
+                    response.FoodItems = items;
                 }
                 else
                 {
