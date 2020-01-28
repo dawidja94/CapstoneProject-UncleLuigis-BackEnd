@@ -44,6 +44,46 @@ namespace RestaurantWebAPI.Controllers
             }
         }
 
+        // PUT: Customer/UpdateByCustomer
+        [HttpPut("UpdateByCustomer")]
+        public IActionResult UpdateCustomerInfoByCustomer(Customer body)
+        {
+            var request = new UpdateCustomerRequest
+            {
+                CustomerToUpdate = body
+            };
 
+            var response =_customerService.UpdateCustomerByCustomer(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
+
+        // PUT: Customer/UpdateByAdmin
+        [HttpPut("UpdateByAdmin")]
+        public IActionResult UpdateCustomerInfoByAdmin(Customer body)
+        {
+            var request = new UpdateCustomerRequest
+            {
+                CustomerToUpdate = body
+            };
+
+            var response = _customerService.UpdateCustomerAdministrative(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
     }
 }
