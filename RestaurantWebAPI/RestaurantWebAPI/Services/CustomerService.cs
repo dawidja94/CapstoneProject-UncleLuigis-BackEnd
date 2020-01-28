@@ -17,23 +17,27 @@ namespace RestaurantWebAPI.Services
             _context = context;
         }
         
-        public GetAllCustomersResponse GetAllCustomers(GetAllCustomersRequest request)
+        public GetCustomerResponse GetCustomer(GetCustomerRequest request)
         {
-            var response = new GetAllCustomersResponse
+            var response = new GetCustomerResponse
             {
                 IsSuccessful = false,
                 Message = ""
             };
+
             try
             {
-                // Query our Foods table in SQL Server. Convert to a List<Food>.
-                var customers = _context.Customers.ToList();
+                var customer = _context.Customers
+                    .Where(x => x.FirstName == request.Body.FirstName)
+                    .Where(x => x.LastName == request.Body.LastName)
+                    .Where(x => x.PhoneNumber == request.Body.PhoneNumber)
+                    .FirstOrDefault();
 
                 // Handle null value conditionally.
-                if (customers != null)
+                if (customer != null)
                 {
                     response.IsSuccessful = true;
-                    response.CustomerList = customers;
+                    response.Customer = customer;
                 }
                 else
                 {
@@ -46,8 +50,8 @@ namespace RestaurantWebAPI.Services
             }
 
             return response;
-
         }
+
         public CreateCustomerResponse CreateCustomer(CreateCustomerRequest request)
         {
             var response = new CreateCustomerResponse
@@ -67,6 +71,7 @@ namespace RestaurantWebAPI.Services
             {
                 response.Message = ex.ToString();
             }
+
             return response;
         }
 
@@ -136,6 +141,5 @@ namespace RestaurantWebAPI.Services
             }
             return response;
         }
-
     }
 }

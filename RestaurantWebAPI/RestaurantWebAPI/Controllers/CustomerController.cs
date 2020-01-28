@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RestaurantWebAPI.Models.Bodies;
 using RestaurantWebAPI.Models.Entities;
 using RestaurantWebAPI.Models.ServiceRequests;
 using RestaurantWebAPI.Services;
@@ -23,16 +24,20 @@ namespace RestaurantWebAPI.Controllers
             _customerService = customerService;
         }
 
-        //GET: Customer/GetAllCustomers
-        [HttpGet("GetAllCustomers")]
-        public IActionResult GetAllCustomers()
+        // POST: Customer/GetCustomers
+        [HttpPost("GetCustomer")]
+        public IActionResult GetCustomers(CustomerModel body)
         {
-            var request = new GetAllCustomersRequest();
-            var response = _customerService.GetAllCustomers(request);
+            var request = new GetCustomerRequest
+            {
+                Body = body
+            };
+
+            var response = _customerService.GetCustomer(request);
 
             if (response.IsSuccessful)
             {
-                return Ok(response.CustomerList);
+                return Ok(response.Customer);
             }
             else
             {

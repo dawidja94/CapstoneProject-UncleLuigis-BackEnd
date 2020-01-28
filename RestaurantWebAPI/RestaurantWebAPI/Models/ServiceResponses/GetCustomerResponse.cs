@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace RestaurantWebAPI.Models.ServiceResponses
 {
-    public class GetAllCustomersResponse : BaseServiceResponse
+    public class GetCustomerResponse : BaseServiceResponse
     {
-        public List<Customer> CustomerList { get; set; }
+        public Customer Customer { get; set; }
     }
 }
