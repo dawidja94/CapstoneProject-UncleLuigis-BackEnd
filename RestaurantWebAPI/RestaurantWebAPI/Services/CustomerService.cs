@@ -55,7 +55,6 @@ namespace RestaurantWebAPI.Services
                         .Where(x => x.PhoneNumber == request.CustomerToUpdate.PhoneNumber)
                         .FirstOrDefault();
 
-
                 if (customerToUpdate != null)
                 {
                     customerToUpdate.FirstName = request.CustomerToUpdate.FirstName;
