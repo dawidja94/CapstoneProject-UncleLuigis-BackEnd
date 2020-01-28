@@ -29,7 +29,7 @@ namespace RestaurantWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("AzureConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("LocalConnection")));
 
             services.AddScoped<IFoodService, FoodService>();
 

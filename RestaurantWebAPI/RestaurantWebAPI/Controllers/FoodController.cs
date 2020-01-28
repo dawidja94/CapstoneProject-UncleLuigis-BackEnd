@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RestaurantWebAPI.Models.Entities;
+using RestaurantWebAPI.Models.ServiceRequests;
 using RestaurantWebAPI.Services;
 
 namespace RestaurantWebAPI.Controllers
@@ -18,19 +20,47 @@ namespace RestaurantWebAPI.Controllers
             _foodservice = foodService;
         }
 
-        [HttpGet("read")]
+        // GET: Food/GetAllFood
+        [HttpGet("GetAllFood")]
         public IActionResult GetAllFood()
         {
-            var items = _foodservice.GetAllFoodMenuItems();
+            var request = new GetAllFoodMenuItemsRequest();
 
-            if (items != null) 
+            var response = _foodservice.GetAllFoodMenuItems(request);
+
+            if (response.IsSuccessful) 
             {
-                return Ok(items);
+                return Ok(response.FoodItems);
             }
             else
             {
-                return BadRequest("You suck");
+                return BadRequest(response.Message);
             }
         }
+
+        // POST: Food/CreateFoodItem
+        [HttpPost("CreateFoodItem")]
+        public IActionResult CreateFoodItem(Food body)
+        {
+            var request = new CreateFoodItemRequest
+            {
+                FoodItem = body
+            };
+
+            var response = _foodservice.CreateFoodItem(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
+
+        // PUT: Food/UpdateFoodItem
+
+        // DELETE: Food/DeleteFoodItem
     }
 }
