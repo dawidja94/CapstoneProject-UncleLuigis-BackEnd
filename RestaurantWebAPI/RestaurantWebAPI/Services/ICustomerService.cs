@@ -9,6 +9,7 @@ namespace RestaurantWebAPI.Services
 {
     public interface ICustomerService
     {
+        GetAllCustomersResponse GetAllCustomers(GetAllCustomersRequest request);
         CreateCustomerResponse CreateCustomer(CreateCustomerRequest request);
         UpdateCustomerResponse UpdateCustomerByCustomer(UpdateCustomerRequest request);
         UpdateCustomerResponse UpdateCustomerAdministrative(UpdateCustomerRequest request);

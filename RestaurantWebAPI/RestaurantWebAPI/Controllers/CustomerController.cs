@@ -23,6 +23,23 @@ namespace RestaurantWebAPI.Controllers
             _customerService = customerService;
         }
 
+        //GET: Customer/GetAllCustomers
+        [HttpGet("GetAllCustomers")]
+        public IActionResult GetAllCustomers()
+        {
+            var request = new GetAllCustomersRequest();
+            var response = _customerService.GetAllCustomers(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok(response.CustomerList);
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
+
         //POST : Customer/CreateCustomer
         [HttpPost("CreateCustomer")]
         public IActionResult CreateCustomer(Customer body)
