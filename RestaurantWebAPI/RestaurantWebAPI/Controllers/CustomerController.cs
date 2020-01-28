@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantWebAPI.Models.Entities;
+using RestaurantWebAPI.Models.ServiceRequests;
 using RestaurantWebAPI.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -22,12 +23,25 @@ namespace RestaurantWebAPI.Controllers
             _customerService = customerService;
         }
 
-        //POST : // GET: Customer/CreateCustomer
+        //POST : Customer/CreateCustomer
         [HttpPost("CreateCustomer")]
         public IActionResult CreateCustomer(Customer body)
         {
+            var request = new CreateCustomerRequest
+            {
+                Customer = body
+            };
 
-            return Ok();
+            var response = _customerService.CreateCustomer(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
         }
 
 
