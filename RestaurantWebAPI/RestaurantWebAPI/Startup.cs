@@ -45,6 +45,7 @@ namespace RestaurantWebAPI
 
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFoodService, FoodService>();
+            services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddControllers();
         }
