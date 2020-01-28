@@ -16,6 +16,38 @@ namespace RestaurantWebAPI.Services
         {
             _context = context;
         }
+        
+        public GetAllCustomersResponse GetAllCustomers(GetAllCustomersRequest request)
+        {
+            var response = new GetAllCustomersResponse
+            {
+                IsSuccessful = false,
+                Message = ""
+            };
+            try
+            {
+                // Query our Foods table in SQL Server. Convert to a List<Food>.
+                var customers = _context.Customers.ToList();
+
+                // Handle null value conditionally.
+                if (customers != null)
+                {
+                    response.IsSuccessful = true;
+                    response.CustomerList = customers;
+                }
+                else
+                {
+                    response.Message = "Query returned null result.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.ToString();
+            }
+
+            return response;
+
+        }
         public CreateCustomerResponse CreateCustomer(CreateCustomerRequest request)
         {
             var response = new CreateCustomerResponse
