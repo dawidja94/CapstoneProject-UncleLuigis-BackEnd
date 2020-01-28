@@ -19,8 +19,6 @@ namespace RestaurantWebAPI.Models.Entities
         [Required]
         public string PhoneNumber { get; set; }
         [Required]
-        public string AccessCode { get; set; }
-        [Required]
         public DateTime MemberSince { get; set; }
     }
 }
