@@ -28,7 +28,8 @@ namespace RestaurantWebAPI.Services
             var response = new GenerateJWTResponse
             {
                 IsSuccessful = false,
-                Message = ""
+                Message = "",
+                AuthenticatedModel = new AuthenticatedModel()
             };
 
             try
@@ -55,9 +56,9 @@ namespace RestaurantWebAPI.Services
                 claims.Add(new Claim("FirstName", user.Customer.FirstName));
                 claims.Add(new Claim("LastName", user.Customer.LastName));
                 claims.Add(new Claim("Username", user.UserName));
-                claims.Add(new Claim("EmailAddress", user.Email));
+                claims.Add(new Claim("EmailAddress", user.Customer.Email));
                 claims.Add(new Claim("Birthday", user.Customer.DateOfBirth.ToString()));
-                claims.Add(new Claim("PhoneNumber", user.PhoneNumber.ToString()));
+                claims.Add(new Claim("PhoneNumber", user.Customer.PhoneNumber.ToString()));
 
                 // Create access token.
                 var accessToken = new JwtSecurityToken(
