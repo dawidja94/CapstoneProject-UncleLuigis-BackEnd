@@ -99,5 +99,45 @@ namespace LogInWebAPI.Controllers
                 return Unauthorized();
             }
         }
+
+        [HttpPost("ChangePassword")]
+        [Authorize]
+        // POST: api/User/ChangePassword
+        public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordModel model)
+        {
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                ApplicationUser user = await _userManager.FindByNameAsync(model.UserName);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    if (model.NewPassword == model.ConfirmNewPassword)
+                    {
+                        user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, model.NewPassword);
+
+                        var updateResult = await _userManager.UpdateAsync(user);
+
+                        if (!updateResult.Succeeded)
+                        {
+                            return BadRequest("Password wasn't successfully updated.");
+                        }
+                        else if (updateResult.Succeeded)
+                        {
+                            return Ok($"Password for username: {model.UserName} was succesfully updated!");
+                        }
+                    }
+                }
+            }
+
+            return NotFound();
+        }
     }
 }
