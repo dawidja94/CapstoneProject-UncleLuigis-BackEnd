@@ -48,7 +48,9 @@ namespace LogInWebAPI.Controllers
                 var applicationUser = new ApplicationUser
                 {
                     Customer = customer,
-                    UserName = model.UserName
+                    UserName = model.UserName,
+                    Email = model.Customer.Email,
+                    PhoneNumber = model.Customer.PhoneNumber
                 };
 
                 try
@@ -100,9 +102,9 @@ namespace LogInWebAPI.Controllers
             }
         }
 
-        [HttpPost("ChangePassword")]
+        [HttpPut("ChangePassword")]
         [Authorize]
-        // POST: api/User/ChangePassword
+        // PUT: api/User/ChangePassword
         public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordModel model)
         {
             // This doesn't count login failures towards account lockout
@@ -133,6 +135,34 @@ namespace LogInWebAPI.Controllers
                         {
                             return Ok($"Password for username: {model.UserName} was succesfully updated!");
                         }
+                    }
+                }
+            }
+
+            return NotFound();
+        }
+
+        [HttpPut("ForgetPassword")]
+        // PUT: api/User/ChangePassword
+        public async Task<IActionResult> ForgetPassword([FromBody]ForgetPasswordModel model)
+        {
+            ApplicationUser user = await _userManager.FindByNameAsync(model.UserName);
+
+            if (user != null)
+            {
+                if (model.EmailAddress == user.Email.ToString() && model.PhoneNumber == user.PhoneNumber.ToString() && model.NewPassword == model.ConfirmNewPassword)
+                {
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, model.NewPassword);
+
+                    var updateResult = await _userManager.UpdateAsync(user);
+
+                    if (!updateResult.Succeeded)
+                    {
+                        return BadRequest("Password wasn't successfully updated.");
+                    }
+                    else if (updateResult.Succeeded)
+                    {
+                        return Ok($"Password for username: {model.UserName} was succesfully updated!");
                     }
                 }
             }
