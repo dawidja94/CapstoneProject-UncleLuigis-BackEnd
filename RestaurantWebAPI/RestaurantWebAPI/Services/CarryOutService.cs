@@ -96,6 +96,7 @@ namespace RestaurantWebAPI.Services
                 {
                     item.BundleId = maxID;
                 }
+
                 _context.AddRange(request.CarryOut);
                 _context.SaveChanges();
 
