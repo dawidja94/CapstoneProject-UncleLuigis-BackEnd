@@ -45,7 +45,7 @@ namespace RestaurantWebAPI.Controllers
             }
         }
 
-        //POST : Customer/CreateCustomer
+        // POST : Customer/CreateCustomer
         [HttpPost("CreateCustomer")]
         public IActionResult CreateCustomer(Customer body)
         {

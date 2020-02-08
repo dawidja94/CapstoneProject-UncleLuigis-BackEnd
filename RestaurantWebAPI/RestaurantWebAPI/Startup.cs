@@ -150,6 +150,7 @@ namespace RestaurantWebAPI
                 c.RoutePrefix = string.Empty;
             });
 
+            // Only really applies in MVC for the exception page.
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

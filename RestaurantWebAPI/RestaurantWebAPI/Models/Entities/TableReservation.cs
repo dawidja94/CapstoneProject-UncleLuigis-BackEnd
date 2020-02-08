@@ -20,7 +20,7 @@ namespace RestaurantWebAPI.Models.Entities
         public string ReservationTable {get; set; }
         [Required]
         public string ReservationDate { get; set; }
-
+        public string TimeSlot { get; set; }
     }
 
 }
