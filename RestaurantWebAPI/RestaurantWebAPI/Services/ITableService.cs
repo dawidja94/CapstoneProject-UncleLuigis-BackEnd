@@ -9,7 +9,7 @@ namespace RestaurantWebAPI.Services
 {
     interface ITableService
     {
-        GetTableReservationsResponse GetTableReservations(GetTableReservationsRequest request);
+        GetAvailableTableReservationsResponse GetAvailableTableReservations(GetAvailableTableReservationsRequest request);
         GetTableReservationsByCustomerResponse GetTableReservationsByCustomer(GetTableReservationsByCustomerRequest request);
         CreateTableReservationResponse CreateTableReservation(CreateTableReservationRequest request);
         UpdateTableReservationResponse UpdateTableReservation(UpdateTableReservationRequest request);

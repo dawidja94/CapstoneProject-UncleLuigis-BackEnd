@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantWebAPI.Models.ServiceRequests
 {
-    public class GetTableReservationsRequest : BaseServiceRequest
+    public class GetAvailableTableReservationsRequest : BaseServiceRequest
     {
     }
 }
