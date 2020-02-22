@@ -18,6 +18,8 @@ namespace RestaurantWebAPI.Models.Entities
         public double Price { get; set; }
         public bool Vegan { get; set; }
         public bool GlutenFree { get; set; }
+        public string Type { get; set; }
+        public string ImageURL { get; set; }
 
     }
 }

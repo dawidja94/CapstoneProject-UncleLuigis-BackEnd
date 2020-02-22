@@ -158,6 +158,7 @@ namespace RestaurantWebAPI
 
             app.UseHttpsRedirection();
 
+            app.UseCors("CorsPolicy");
             app.UseRouting();
 
             app.UseAuthentication();
