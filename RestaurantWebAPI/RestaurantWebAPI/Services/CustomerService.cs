@@ -62,10 +62,11 @@ namespace RestaurantWebAPI.Services
 
             try
             {
-                _context.Add(request.Customer);
+                var createdCustomer = _context.Add(request.Customer);
                 _context.SaveChanges();
 
                 response.IsSuccessful = true;
+                response.CreatedCustomer = createdCustomer.Entity;
             }
             catch(Exception ex)
             {

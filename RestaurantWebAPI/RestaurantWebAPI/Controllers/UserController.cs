@@ -37,10 +37,7 @@ namespace LogInWebAPI.Controllers
         {
             // Query on the customer.
             var customer = _context.Customers
-                .Where(x => x.FirstName == model.Customer.FirstName)
-                .Where(x => x.LastName == model.Customer.LastName)
-                .Where(x => x.PhoneNumber == model.Customer.PhoneNumber)
-                .Where(x => x.Email == model.Customer.Email)
+                .Where(x => x.Id == model.CustomerId)
                 .FirstOrDefault();
 
             if (customer != null)
@@ -49,8 +46,8 @@ namespace LogInWebAPI.Controllers
                 {
                     Customer = customer,
                     UserName = model.UserName,
-                    Email = model.Customer.Email,
-                    PhoneNumber = model.Customer.PhoneNumber
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber
                 };
 
                 try

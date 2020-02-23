@@ -95,6 +95,5 @@ namespace RestaurantWebAPI.Controllers
                 return BadRequest(response.Message);
             }
         }
-
     }
 }

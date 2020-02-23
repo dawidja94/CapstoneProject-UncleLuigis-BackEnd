@@ -21,7 +21,9 @@ namespace RestaurantWebAPI.Models.Bodies
         [DataType(DataType.Password)]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
+        public string Email { get; set; }
 
-        public Customer Customer { get; set; }
+        public string PhoneNumber { get; set; }
+        public int CustomerId { get; set; }
     }
 }
