@@ -167,7 +167,7 @@ namespace LogInWebAPI.Controllers
             return NotFound();
         }
 
-        [HttpGet("GetUser")]
+        [HttpGet("GetUser/{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
             ApplicationUser user = await _userManager.FindByNameAsync(id);
