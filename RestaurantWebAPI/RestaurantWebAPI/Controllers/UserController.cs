@@ -46,23 +46,26 @@ namespace LogInWebAPI.Controllers
                 {
                     Customer = customer,
                     UserName = model.UserName,
-                    Email = model.Email,
-                    PhoneNumber = model.PhoneNumber
+                    Email = customer.Email,
+                    PhoneNumber = customer.PhoneNumber
                 };
 
                 try
                 {
-                    var result = await _userManager.CreateAsync(applicationUser, model.Password);
-
-                    if (result.Succeeded)
+                    if (model.Password == model.ConfirmPassword)
                     {
-                        var request = new GenerateJWTRequest
-                        {
-                            UserName = model.UserName
-                        };
+                        var result = await _userManager.CreateAsync(applicationUser, model.Password);
 
-                        var authenticatedModel = _tokenService.GenerateJWT(request);
-                        return Ok(authenticatedModel);
+                        if (result.Succeeded)
+                        {
+                            var request = new GenerateJWTRequest
+                            {
+                                UserName = model.UserName
+                            };
+
+                            var authenticatedModel = _tokenService.GenerateJWT(request);
+                            return Ok(authenticatedModel);
+                        }
                     }
                 }
                 catch (Exception ex)
