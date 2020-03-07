@@ -174,11 +174,11 @@ namespace LogInWebAPI.Controllers
 
             if (user != null)
             {
-                return Ok(user.UserName);
+                return Ok(new { username = user.UserName });
             }
             else
             {
-                return Ok("");
+                return Ok(new { username = "" });
             }
         }
     }
