@@ -64,7 +64,7 @@ namespace RestaurantWebAPI.Services
                 var accessToken = new JwtSecurityToken(
                         issuer: "smesk.in",
                         audience: "readers",
-                        expires: DateTime.Now.AddSeconds(30),
+                        expires: DateTime.Now.AddMinutes(10),
                         signingCredentials: signingCredentials,
                         claims: claims
                 );
@@ -73,7 +73,7 @@ namespace RestaurantWebAPI.Services
                 var refreshToken = new JwtSecurityToken(
                         issuer: "smesk.in",
                         audience: "readers",
-                        expires: DateTime.Now.AddMinutes(15),
+                        expires: DateTime.Now.AddHours(24),
                         signingCredentials: signingCredentials,
                         claims: claims
                 );
