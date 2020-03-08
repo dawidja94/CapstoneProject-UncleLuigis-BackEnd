@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RestaurantWebAPI.Models.Bodies;
 using RestaurantWebAPI.Models.Entities;
 using RestaurantWebAPI.Models.ServiceRequests;
 using RestaurantWebAPI.Services;
@@ -12,7 +14,8 @@ namespace RestaurantWebAPI.Controllers
 {
  
     [ApiController]
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("[controller]")]
     public class CarryOutController : ControllerBase
     {
         private readonly ICarryOutService _carryOutService;
@@ -21,12 +24,16 @@ namespace RestaurantWebAPI.Controllers
             _carryOutService = carryOutService;
         }
 
-        //GET: CarryOut/GetAllOuts
-        [HttpGet("GetAllCarryOuts")]
-        public IActionResult GetAllCarryOuts()
+        //GET: CarryOut/GetAllOutsInCart
+        [HttpGet("GetAllCarryOutsInCart/{id}")]
+        public IActionResult GetAllCarryOutsInCart(int id)
         {
-            var request = new GetAllCarryOutsForDateRequest();
-            var response = _carryOutService.GetAllCarryOutsForDate(request);
+            var request = new GetAllCarryOutsInCartRequest()
+            {
+                CustomerId = id
+            };
+
+            var response = _carryOutService.GetAllCarryOutsInCart(request);
 
             if (response.IsSuccessful)
             {
@@ -37,6 +44,7 @@ namespace RestaurantWebAPI.Controllers
                 return BadRequest(response.Message);
             }
         }
+
         //GET: CarryOut/GetAllOutsForDate
         [HttpGet("GetAllCarryOutsForDate")]
         public IActionResult GetAllCarryOutsForDate()
@@ -72,6 +80,27 @@ namespace RestaurantWebAPI.Controllers
             else
             {
                 return BadRequest(response.Message);
+            }
+        }
+
+        // POST: CarryOut/AddToCart
+        [HttpPost("AddToCart")]
+        public IActionResult AddToCart(CarryOutBody body)
+        {
+            var request = new AddToCartRequest
+            {
+                CarryOutToAddToCart = body,
+            };
+
+            var response = _carryOutService.AddToCart(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantWebAPI.Data;
+using RestaurantWebAPI.Models.Entities;
 using RestaurantWebAPI.Models.ServiceRequests;
 using RestaurantWebAPI.Models.ServiceResponses;
 using System;
@@ -18,9 +19,9 @@ namespace RestaurantWebAPI.Services
             _context = context;
         }
 
-        public GetAllCarryOutsResponse GetAllCarryOuts(GetAllCarryOutsRequest request)
+        public GetAllCarryOutsInCartResponse GetAllCarryOutsInCart(GetAllCarryOutsInCartRequest request)
         {
-            var response = new GetAllCarryOutsResponse
+            var response = new GetAllCarryOutsInCartResponse
             {
                 IsSuccessful = false,
                 Message = ""
@@ -28,11 +29,15 @@ namespace RestaurantWebAPI.Services
 
             try
             {
+                var customer = _context.Customers
+                    .FirstOrDefault(x => x.Id == request.CustomerId);
+
                 var carryOuts = _context.CarryOuts
                     .Include(x => x.Customer)
-                    .Where(x => x.Customer.FirstName == request.Customer.FirstName)
-                    .Where(x => x.Customer.LastName == request.Customer.LastName)
-                    .Where(x => x.Customer.PhoneNumber == request.Customer.PhoneNumber)
+                    .Include(x => x.Food)
+                    .Include(x => x.Beverage)
+                    .Where(x => x.Customer.Id == customer.Id)
+                    .Where(x => x.SubmissionTime == null)
                     .ToList();
 
                 response.CarryOuts = carryOuts;
@@ -61,7 +66,7 @@ namespace RestaurantWebAPI.Services
                     .Where(x => x.Customer.FirstName == request.Customer.FirstName)
                     .Where(x => x.Customer.LastName == request.Customer.LastName)
                     .Where(x => x.Customer.PhoneNumber == request.Customer.PhoneNumber)
-                    .Where(x => x.SubmissionTime.Date.ToString("MM/dd/yyyy") == request.Date.Date.ToString("MM/dd/yyyy"))
+                    //.Where(x => x.SubmissionTime.Date.ToString("MM/dd/yyyy") == request.Date.Date.ToString("MM/dd/yyyy"))
                     .ToList();
 
                 response.CarryOuts = carryOuts;
@@ -141,6 +146,65 @@ namespace RestaurantWebAPI.Services
             catch (Exception ex)
             {
                 response.IsSuccessful = false;
+                response.Message = ex.ToString();
+            }
+
+            return response;
+        }
+
+        public AddToCartResponse AddToCart(AddToCartRequest request)
+        {
+            var response = new AddToCartResponse
+            {
+                IsSuccessful = false,
+                Message = ""
+            };
+
+            try
+            {
+                var customer = _context.Customers
+                    .Where(x => x.Id == request.CarryOutToAddToCart.CustomerId)
+                    .FirstOrDefault();
+
+                Food food = null;
+                Beverage beverage = null;
+
+                if (request.CarryOutToAddToCart.Food != null)
+                {
+                    food = _context.Foods
+                    .Where(x => x.Id == request.CarryOutToAddToCart.Food.Id)
+                    .FirstOrDefault();
+                }
+                if (request.CarryOutToAddToCart.Beverage != null)
+                {
+                    beverage = _context.Beverages
+                        .Where(x => x.Id == request.CarryOutToAddToCart.Beverage.Id)
+                        .FirstOrDefault();
+                }
+
+                if (customer != null)
+                {
+                    var cartItem = new CarryOut
+                    {
+                        Beverage = beverage,
+                        BeverageQuantity = request.CarryOutToAddToCart.BeverageQuantity,
+                        BundleId = 0,
+                        Customer = customer,
+                        Food = food,
+                        FoodQuantity = request.CarryOutToAddToCart.FoodQuantity,
+                        SubmissionTime = null,
+                        Id = 0
+                    };
+
+                    _context.Add(cartItem);
+                    _context.SaveChanges();
+
+                    response.IsSuccessful = true;
+                    response.Message = "Successfully added carry out to cart for the customer.";
+                }
+            }
+            catch (Exception ex)
+            {
                 response.Message = ex.ToString();
             }
 

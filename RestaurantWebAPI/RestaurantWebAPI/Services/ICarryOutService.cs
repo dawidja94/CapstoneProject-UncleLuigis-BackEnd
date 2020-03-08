@@ -9,9 +9,10 @@ namespace RestaurantWebAPI.Services
 {
     public interface ICarryOutService
     {
-        GetAllCarryOutsResponse GetAllCarryOuts(GetAllCarryOutsRequest request);
+        GetAllCarryOutsInCartResponse GetAllCarryOutsInCart(GetAllCarryOutsInCartRequest request);
         GetAllCarryOutsForDateResponse GetAllCarryOutsForDate(GetAllCarryOutsForDateRequest request);
         CreateCarryOutResponse CreateCarryOut(CreateCarryOutRequest request);
         UpdateCarryOutResponse UpdateCarryOut(UpdateCarryOutRequest request);
+        AddToCartResponse AddToCart(AddToCartRequest request);
     }
 }

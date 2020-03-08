@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantWebAPI.Models.ServiceResponses
 {
-    public class GetAllCarryOutsResponse : BaseServiceResponse
+    public class GetAllCarryOutsInCartResponse : BaseServiceResponse
     {
         public List<CarryOut> CarryOuts { get; set; }
     }
