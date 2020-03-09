@@ -26,6 +26,7 @@ namespace RestaurantWebAPI.Controllers
 
         //GET: CarryOut/GetAllOutsInCart
         [HttpGet("GetAllCarryOutsInCart/{id}")]
+        [AllowAnonymous]
         public IActionResult GetAllCarryOutsInCart(int id)
         {
             var request = new GetAllCarryOutsInCartRequest()
@@ -101,6 +102,28 @@ namespace RestaurantWebAPI.Controllers
             else
             {
                 return BadRequest();
+            }
+        }
+
+        // DELETE: CarryOut/RemoveFromCart
+        [HttpDelete("RemoveFromCart")]
+        public IActionResult RemoveFromCart(RemoveCarryOutBody body)
+        {
+            var request = new RemoveFromCartRequest
+            {
+                CarryOutId = body.CarryOutId,
+                CustomerId = body.CustomerId
+            };
+
+            var response = _carryOutService.RemoveFromCart(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
             }
         }
 

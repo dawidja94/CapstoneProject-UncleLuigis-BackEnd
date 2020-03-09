@@ -210,5 +210,43 @@ namespace RestaurantWebAPI.Services
 
             return response;
         }
+
+        public RemoveFromCartResponse RemoveFromCart(RemoveFromCartRequest request)
+        {
+            var response = new RemoveFromCartResponse
+            {
+                IsSuccessful = false,
+                Message = ""
+            };
+
+            try
+            {
+                var carryOutItemToDelete = _context.CarryOuts
+                    .Include(x => x.Customer)
+                    .Where(x => x.Customer.Id == request.CustomerId)
+                    .Where(x => x.Id == request.CarryOutId)
+                    .FirstOrDefault();
+                
+                if (carryOutItemToDelete != null)
+                {
+                    _context.Remove(carryOutItemToDelete);
+                    _context.SaveChanges();
+
+                    response.IsSuccessful = true;
+                    response.Message = $"Successfully deleted Carry Out Item Record with Id: ${request.CarryOutId}.";
+                }
+                else
+                {
+                    response.IsSuccessful = false;
+                    response.Message = $"Was not able to delete Carry Out Item Record with Id: ${request.CarryOutId}.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.ToString();
+            }
+
+            return response;
+        }
     }
 }
