@@ -90,20 +90,35 @@ namespace RestaurantWebAPI.Services
 
             try
             {
-                var maxID = _context.CarryOuts.Max(x => x.BundleId);
+                var customer = _context.Customers
+                    .Where(x => x.Id == request.Customer.Id)
+                    .Where(x => x.FirstName == request.Customer.FirstName)
+                    .Where(x => x.LastName == request.Customer.LastName)
+                    .FirstOrDefault();
 
-                if (maxID != 0)
+                var maxBundleId = _context.CarryOuts
+                    .Max(x => x.BundleId);
+
+                maxBundleId++;
+                    
+                if (customer != null)
                 {
-                    maxID++;
-                }
+                    var carryOutItemsToSubmit = _context.CarryOuts
+                        .Include(x => x.Customer)
+                        .Where(x => x.Customer == customer)
+                        .Where(x => x.SubmissionTime == null)
+                        .ToList();
 
-                foreach (var item in request.CarryOut)
-                {
-                    item.BundleId = maxID;
-                }
+                    _context.UpdateRange(carryOutItemsToSubmit);
 
-                _context.AddRange(request.CarryOut);
-                _context.SaveChanges();
+                    foreach (var item in carryOutItemsToSubmit)
+                    {
+                        item.SubmissionTime = DateTime.Now;
+                        item.BundleId = maxBundleId;
+                    }
+
+                    _context.SaveChanges();
+                }
 
                 response.IsSuccessful = true;
             }

@@ -65,11 +65,11 @@ namespace RestaurantWebAPI.Controllers
 
         //POST: CarryOut/CreateCarryOut
         [HttpPost("CreateCarryOut")]
-        public IActionResult CreateCarryOut(List<CarryOut> body)
+        public IActionResult CreateCarryOut([FromBody]CustomerBody body)
         {
             var request = new CreateCarryOutRequest
             {
-                CarryOut = body
+                Customer = body
             };
 
             var response = _carryOutService.CreateCarryOut(request);
@@ -129,7 +129,7 @@ namespace RestaurantWebAPI.Controllers
 
         //PUT: CarryOut/UpdateCarryOut
         [HttpPut("UpdateCarryOut")]
-        public IActionResult UpdateCarryOut (List<CarryOut> body)
+        public IActionResult UpdateCarryOut(List<CarryOut> body)
         {
             var request = new UpdateCarryOutRequest
             {

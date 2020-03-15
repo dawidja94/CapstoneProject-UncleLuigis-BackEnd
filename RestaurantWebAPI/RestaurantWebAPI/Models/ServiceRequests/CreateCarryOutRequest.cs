@@ -1,4 +1,5 @@
-﻿using RestaurantWebAPI.Models.Entities;
+﻿using RestaurantWebAPI.Models.Bodies;
+using RestaurantWebAPI.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,6 @@ namespace RestaurantWebAPI.Models.ServiceRequests
 {
     public class CreateCarryOutRequest : BaseServiceRequest
     {
-        public List<CarryOut> CarryOut { get; set; }
+        public CustomerBody Customer { get; set; }
     }
 }
