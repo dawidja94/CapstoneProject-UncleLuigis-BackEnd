@@ -211,6 +211,7 @@ namespace RestaurantWebAPI.Services
                             .Include(x => x.Customer)
                             .Where(x => x.Customer.Id == customer.Id)
                             .Where(x => x.Food.Name == food.Name)
+                            .Where(x => x.SubmissionTime == null)
                             .ToList();
 
                         foreach (var item in existingFood)
@@ -229,6 +230,7 @@ namespace RestaurantWebAPI.Services
                             .Include(x => x.Customer)
                             .Where(x => x.Customer.Id == customer.Id)
                             .Where(x => x.Beverage.Name == beverage.Name)
+                            .Where(x => x.SubmissionTime == null)
                             .ToList();
 
                         foreach (var item in existingBeverages)
