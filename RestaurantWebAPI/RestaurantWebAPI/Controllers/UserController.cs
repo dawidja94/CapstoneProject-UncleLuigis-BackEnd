@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RestaurantWebAPI.Data;
 using RestaurantWebAPI.Models.Bodies;
 using RestaurantWebAPI.Models.Entities;
@@ -42,35 +43,57 @@ namespace LogInWebAPI.Controllers
 
             if (customer != null)
             {
-                var applicationUser = new ApplicationUser
-                {
-                    Customer = customer,
-                    UserName = model.UserName,
-                    Email = customer.Email,
-                    PhoneNumber = customer.PhoneNumber
-                };
 
-                try
+
+                // Need code here to check if the incoming customer already has an account.
+                // If they do not - proceed with logic and allow the user account to be created.
+                // Otherwise through them out/reject with a status 400 error and a message for the reason.
+                var users = _userManager
+                    .Users
+                    .Include(x => x.Customer)
+                    .ToList();
+
+                var foundAssociatedUserProfile = users
+                    .Where(x => x.Customer.Id == model.CustomerId)
+                    .ToList();
+
+                // If == 0, this customer doesn't have an established user profile/account.
+                if (foundAssociatedUserProfile.Count == 0)
                 {
-                    if (model.Password == model.ConfirmPassword)
+                    var applicationUser = new ApplicationUser
                     {
-                        var result = await _userManager.CreateAsync(applicationUser, model.Password);
+                        Customer = customer,
+                        UserName = model.UserName,
+                        Email = customer.Email,
+                        PhoneNumber = customer.PhoneNumber
+                    };
 
-                        if (result.Succeeded)
+                    try
+                    {
+                        if (model.Password == model.ConfirmPassword)
                         {
-                            var request = new GenerateJWTRequest
-                            {
-                                UserName = model.UserName
-                            };
+                            var result = await _userManager.CreateAsync(applicationUser, model.Password);
 
-                            var authenticatedModel = _tokenService.GenerateJWT(request);
-                            return Ok(authenticatedModel);
+                            if (result.Succeeded)
+                            {
+                                var request = new GenerateJWTRequest
+                                {
+                                    UserName = model.UserName
+                                };
+
+                                var authenticatedModel = _tokenService.GenerateJWT(request);
+                                return Ok(authenticatedModel);
+                            }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(ex.ToString());
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    return BadRequest(ex.ToString());
+                    return BadRequest($"Could not create user account. Because a duplicate user account would be created for this customer with ID: {model.CustomerId}.");
                 }
             }
 
@@ -92,7 +115,7 @@ namespace LogInWebAPI.Controllers
                 {
                     UserName = model.UserName
                 };
-                
+
                 var authenticatedModel = _tokenService.GenerateJWT(request);
                 return Ok(authenticatedModel);
             }
@@ -183,6 +206,23 @@ namespace LogInWebAPI.Controllers
             {
                 return Ok(new { username = "" });
             }
+        }
+
+        [HttpGet("GetUserProfileByCustomer/{id}")]
+        //Pass in the customer id for the paremeter of id
+
+        public IActionResult GetUserProfileByCustomer([FromRoute]int id)
+        {
+            var users = _userManager
+                .Users
+                .Include(x => x.Customer)
+                .ToList();
+
+            var foundAssociatedUserProfile = users
+                .Where(x => x.Customer.Id == id)
+                .ToList();
+
+            return Ok(foundAssociatedUserProfile);
         }
     }
 }
