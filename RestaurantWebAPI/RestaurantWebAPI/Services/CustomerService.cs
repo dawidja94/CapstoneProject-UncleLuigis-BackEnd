@@ -28,8 +28,7 @@ namespace RestaurantWebAPI.Services
             try
             {
                 var customer = _context.Customers
-                    .Where(x => x.FirstName == request.Body.FirstName)
-                    .Where(x => x.LastName == request.Body.LastName)
+                    .Where(x => x.Email == request.Body.Email)
                     .Where(x => x.PhoneNumber == request.Body.PhoneNumber)
                     .FirstOrDefault();
 
