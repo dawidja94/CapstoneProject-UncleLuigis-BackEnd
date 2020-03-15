@@ -167,7 +167,11 @@ namespace RestaurantWebAPI.Services
                     .FirstOrDefault();
 
                 Food food = null;
+                List<CarryOut> existingFood = null;
                 Beverage beverage = null;
+                List<CarryOut> existingBeverages = null;
+                int currentFoodQuantity = 0;
+                int currentBeverageQuantity = 0;
 
                 if (request.CarryOutToAddToCart.Food != null)
                 {
@@ -184,14 +188,50 @@ namespace RestaurantWebAPI.Services
 
                 if (customer != null)
                 {
+                    if (food != null)
+                    {
+                        existingFood = _context.CarryOuts
+                            .Include(x => x.Food)
+                            .Include(x => x.Beverage)
+                            .Include(x => x.Customer)
+                            .Where(x => x.Customer.Id == customer.Id)
+                            .Where(x => x.Food.Name == food.Name)
+                            .ToList();
+
+                        foreach (var item in existingFood)
+                        {
+                            currentFoodQuantity += item.FoodQuantity;
+                        }
+
+                        _context.RemoveRange(existingFood);
+                    }
+
+                    if (beverage != null)
+                    {
+                        existingBeverages = _context.CarryOuts
+                            .Include(x => x.Food)
+                            .Include(x => x.Beverage)
+                            .Include(x => x.Customer)
+                            .Where(x => x.Customer.Id == customer.Id)
+                            .Where(x => x.Beverage.Name == beverage.Name)
+                            .ToList();
+
+                        foreach (var item in existingBeverages)
+                        {
+                            currentBeverageQuantity += item.BeverageQuantity;
+                        }
+
+                        _context.RemoveRange(existingBeverages);
+                    }
+
                     var cartItem = new CarryOut
                     {
                         Beverage = beverage,
-                        BeverageQuantity = request.CarryOutToAddToCart.BeverageQuantity,
+                        BeverageQuantity = request.CarryOutToAddToCart.BeverageQuantity + currentBeverageQuantity,
                         BundleId = 0,
                         Customer = customer,
                         Food = food,
-                        FoodQuantity = request.CarryOutToAddToCart.FoodQuantity,
+                        FoodQuantity = request.CarryOutToAddToCart.FoodQuantity + currentFoodQuantity,
                         SubmissionTime = null,
                         Id = 0
                     };
