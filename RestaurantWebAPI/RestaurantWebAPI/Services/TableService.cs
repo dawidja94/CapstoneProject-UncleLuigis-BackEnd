@@ -19,7 +19,7 @@ namespace RestaurantWebAPI.Services
             _context = context;
         }
         
-        public AllocateNewTablesResponse AllocateNewTables(AllocateNewTablesRequest request)
+        private void AllocateNewTables()
         {
             var response = new AllocateNewTablesResponse
             {
@@ -37,28 +37,44 @@ namespace RestaurantWebAPI.Services
 
             try
             {
-                // This logic should create unreserved table openings for the next 5 days.
-                for (int i = 0; i < 5; i++)
-                {
-                    DateTime date = new DateTime();
+                var record = _context.TableReservations
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefault();
 
-                    if (i != 0)
+                // This logic should create unreserved table openings for the next 365 days.
+                for (int i = 0; i < 1; i++)
+                {
+                    DateTime dateTime = DateTime.Today;
+                    string dateString = "";
+
+                    if (record != null)
                     {
-                        date.AddDays(i);
+                        dateString = record.ReservationDate;
+                        dateTime = Convert.ToDateTime(dateString);
+                        dateTime = dateTime.AddDays(i + 1);
+                    }
+                    else
+                    {
+                        if (i != 0)
+                        {
+                            dateTime = dateTime.AddDays(i + 1);
+                        }
                     }
 
+                    
 
                     // Logic for tables for 6. There are 6 tables like this.
                     for (int j = 0; j < 6; j++)
                     {
                         foreach (var timeSlot in timeSlots)
                         {
+                            int number = j + 1;
                             tableReservations.Add(new TableReservation
                             {
-                                ReservationTable = $"Table #{j++}-6",
+                                ReservationTable = $"Table #{number}-6",
                                 TableSize = 6,
                                 TimeSlot = timeSlot,
-                                ReservationDate = date.Date.ToString("MM/dd/yyyy")
+                                ReservationDate = dateTime.Date.ToString("MM/dd/yyyy")
                             });
                         }
                     }
@@ -68,12 +84,13 @@ namespace RestaurantWebAPI.Services
                     {
                         foreach (var timeSlot in timeSlots)
                         {
+                            int number = j + 1;
                             tableReservations.Add(new TableReservation
                             {
-                                ReservationTable = $"Table #{j++}-4",
+                                ReservationTable = $"Table #{number}-4",
                                 TableSize = 4,
                                 TimeSlot = timeSlot,
-                                ReservationDate = date.Date.ToString("MM/dd/yyyy")
+                                ReservationDate = dateTime.Date.ToString("MM/dd/yyyy")
                             });
                         }
                     }
@@ -83,12 +100,13 @@ namespace RestaurantWebAPI.Services
                     {
                         foreach (var timeSlot in timeSlots)
                         {
+                            int number = j + 1;
                             tableReservations.Add(new TableReservation
                             {
-                                ReservationTable = $"Table #{j++}-2",
+                                ReservationTable = $"Table #{number}-2",
                                 TableSize = 2,
                                 TimeSlot = timeSlot,
-                                ReservationDate = date.Date.ToString("MM/dd/yyyy")
+                                ReservationDate = dateTime.Date.ToString("MM/dd/yyyy")
                             });
                         }
                     }
@@ -98,23 +116,25 @@ namespace RestaurantWebAPI.Services
                     {
                         foreach (var timeSlot in timeSlots)
                         {
+                            int number = j + 1;
                             tableReservations.Add(new TableReservation
                             {
-                                ReservationTable = $"Table #{j++}-4",
-                                TableSize = 2,
+                                ReservationTable = $"Table #{number}-4",
+                                TableSize = 4,
                                 TimeSlot = timeSlot,
-                                ReservationDate = date.Date.ToString("MM/dd/yyyy")
+                                ReservationDate = dateTime.Date.ToString("MM/dd/yyyy")
                             });
                         }
                     }
                 }
+
+                _context.AddRange(tableReservations);
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {
                 response.Message = ex.ToString();
             }
-
-            return response;
         }
 
         public CreateTableReservationResponse CreateTableReservation(CreateTableReservationRequest request)
@@ -132,12 +152,31 @@ namespace RestaurantWebAPI.Services
 
             try
             {
+                AllocateNewTables();
+
+                int partySize = 0;
+
+                if (request.PartySize == 2)
+                {
+                    partySize = 2;
+                }
+                else if (request.PartySize >=2 && request.PartySize <=4)
+                {
+                    partySize = 4;
+                }
+                else if (request.PartySize >=4 && request.PartySize <= 6)
+                {
+                    partySize = 6;
+                }
+
                 var reservations = _context.TableReservations
                     .Include(x => x.Customer)
                     .Where(x => x.Customer == null)
+                    .Where(x => x.TableSize == partySize)
                     .ToList();
 
                 response.Reservations = reservations;
+                response.IsSuccessful = true;
             }
             catch (Exception ex)
             {

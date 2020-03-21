@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace RestaurantWebAPI.Services
 {
-    interface ITableService
+    public interface ITableService
     {
         GetAvailableTableReservationsResponse GetAvailableTableReservations(GetAvailableTableReservationsRequest request);
         GetTableReservationsByCustomerResponse GetTableReservationsByCustomer(GetTableReservationsByCustomerRequest request);
         CreateTableReservationResponse CreateTableReservation(CreateTableReservationRequest request);
         UpdateTableReservationResponse UpdateTableReservation(UpdateTableReservationRequest request);
-        AllocateNewTablesResponse AllocateNewTables(AllocateNewTablesRequest request);
     }
 }
