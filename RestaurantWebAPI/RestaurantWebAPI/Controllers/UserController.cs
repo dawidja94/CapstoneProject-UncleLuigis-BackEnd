@@ -33,7 +33,7 @@ namespace LogInWebAPI.Controllers
 
         [HttpPost("Register")]
         [AllowAnonymous]
-        // POST: /api/User/Register
+        // POST: /User/Register
         public async Task<Object> PostApplicationUser([FromBody]ApplicationUserModel model)
         {
             // Query on the customer.
@@ -102,7 +102,7 @@ namespace LogInWebAPI.Controllers
 
         [HttpPost("Login")]
         [AllowAnonymous]
-        // POST: api/User/Login
+        // POST: /User/Login
         public async Task<IActionResult> Login([FromBody]LoginModel model)
         {
             // This doesn't count login failures towards account lockout
@@ -127,7 +127,7 @@ namespace LogInWebAPI.Controllers
 
         [HttpPut("ChangePassword")]
         [Authorize]
-        // PUT: api/User/ChangePassword
+        // PUT: /User/ChangePassword
         public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordModel model)
         {
             // This doesn't count login failures towards account lockout
@@ -166,7 +166,7 @@ namespace LogInWebAPI.Controllers
         }
 
         [HttpPut("ForgetPassword")]
-        // PUT: api/User/ChangePassword
+        // PUT: /User/ForgetPassword
         public async Task<IActionResult> ForgetPassword([FromBody]ForgetPasswordModel model)
         {
             ApplicationUser user = await _userManager.FindByNameAsync(model.UserName);
@@ -181,11 +181,11 @@ namespace LogInWebAPI.Controllers
 
                     if (!updateResult.Succeeded)
                     {
-                        return BadRequest("Password wasn't successfully updated.");
+                        return BadRequest(new { message = "Password wasn't successfully updated." });
                     }
                     else if (updateResult.Succeeded)
                     {
-                        return Ok($"Password for username: {model.UserName} was succesfully updated!");
+                        return Ok(new { message = $"Password for username: {model.UserName} was succesfully updated!" });
                     }
                 }
             }
