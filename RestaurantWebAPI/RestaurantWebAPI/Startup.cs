@@ -116,6 +116,7 @@ namespace RestaurantWebAPI
             services.AddScoped<IFoodService, FoodService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICarryOutService, CarryOutService>();
+            services.AddScoped<ITableService, TableService>();
             services.AddControllers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
