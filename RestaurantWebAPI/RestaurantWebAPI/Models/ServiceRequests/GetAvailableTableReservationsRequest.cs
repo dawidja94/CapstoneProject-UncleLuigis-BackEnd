@@ -8,5 +8,6 @@ namespace RestaurantWebAPI.Models.ServiceRequests
     public class GetAvailableTableReservationsRequest : BaseServiceRequest
     {
         public int PartySize { get; set; }
+        public string ReservationDate { get; set; }
     }
 }

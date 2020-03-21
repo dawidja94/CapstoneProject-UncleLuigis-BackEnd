@@ -173,6 +173,7 @@ namespace RestaurantWebAPI.Services
                     .Include(x => x.Customer)
                     .Where(x => x.Customer == null)
                     .Where(x => x.TableSize == partySize)
+                    .Where(x => x.ReservationDate == request.ReservationDate)
                     .ToList();
 
                 response.Reservations = reservations;
