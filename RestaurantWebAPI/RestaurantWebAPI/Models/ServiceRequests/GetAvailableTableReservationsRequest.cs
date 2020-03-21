@@ -9,5 +9,6 @@ namespace RestaurantWebAPI.Models.ServiceRequests
     {
         public int PartySize { get; set; }
         public string ReservationDate { get; set; }
+        public string TimeSlot { get; set; }
     }
 }

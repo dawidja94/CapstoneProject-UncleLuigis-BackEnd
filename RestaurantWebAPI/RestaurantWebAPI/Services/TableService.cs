@@ -174,6 +174,7 @@ namespace RestaurantWebAPI.Services
                     .Where(x => x.Customer == null)
                     .Where(x => x.TableSize == partySize)
                     .Where(x => x.ReservationDate == request.ReservationDate)
+                    .Where(x => x.TimeSlot == request.TimeSlot)
                     .ToList();
 
                 response.Reservations = reservations;

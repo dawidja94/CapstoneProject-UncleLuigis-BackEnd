@@ -27,7 +27,8 @@ namespace RestaurantWebAPI.Controllers
             var request = new GetAvailableTableReservationsRequest
             {
                 PartySize = body.PartySize,
-                ReservationDate = body.ReservationDate
+                ReservationDate = body.ReservationDate,
+                TimeSlot = body.TimeSlot
             };
 
             var response = _tableService.GetAvailableTableReservations(request);
