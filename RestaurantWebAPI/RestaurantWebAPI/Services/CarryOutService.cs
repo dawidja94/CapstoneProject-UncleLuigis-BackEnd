@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantWebAPI.Data;
+using RestaurantWebAPI.Models.Bodies;
 using RestaurantWebAPI.Models.Entities;
 using RestaurantWebAPI.Models.ServiceRequests;
 using RestaurantWebAPI.Models.ServiceResponses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace RestaurantWebAPI.Services
@@ -14,7 +16,7 @@ namespace RestaurantWebAPI.Services
     {
         private readonly ApplicationDbContext _context;
 
-        public CarryOutService (ApplicationDbContext context)
+        public CarryOutService(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -43,11 +45,76 @@ namespace RestaurantWebAPI.Services
                 response.CarryOuts = carryOuts;
                 response.IsSuccessful = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Message = ex.ToString();
             }
 
+            return response;
+        }
+
+        public GetAllCarryOutsForCustomerResponse GetAllCarryOutsForCustomer(GetAllCarryOutsForCustomerRequest request)
+        {
+            var response = new GetAllCarryOutsForCustomerResponse
+            {
+                IsSuccessful = false,
+                Message = ""
+            };
+
+            try
+            {
+                var customer = _context.Customers
+                    .FirstOrDefault(x => x.Id == request.CustomerId);
+
+                var carryOuts = _context.CarryOuts
+                .Include(x => x.Customer)
+                .Where(x => x.Customer.Id == customer.Id)
+                .Where(x => x.SubmissionTime != null)
+                .Where(x => x.BundleId != 0)
+                .ToList();
+
+                var distinctRecords = carryOuts
+                   .GroupBy(x => x.BundleId)
+                   .Select(x => x.First())
+                   .ToList();
+          
+                carryOuts = distinctRecords;
+                response.CarryOuts = carryOuts;
+                response.IsSuccessful = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.ToString();
+            }
+            return response;
+        }
+        public GetCarryOutByIdResponse GetCarryOutById(GetCarryOutByIdRequest request)
+        {
+
+            var response = new GetCarryOutByIdResponse
+            {
+                IsSuccessful = false,
+            };
+
+            try
+            {
+                var bundleId = _context.CarryOuts
+               .FirstOrDefault(x => x.Id == request.BundleId);
+
+                var carryOuts = _context.CarryOuts
+                    .Include(x => x.Food)
+                    .Include(x => x.Beverage)
+                    .Where(x => x.BundleId == request.BundleId)
+                    .Where(x => x.SubmissionTime != null)
+                    .ToList();
+
+                response.CarryOuts = carryOuts;
+                response.IsSuccessful = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.ToString();
+            }
             return response;
         }
 
