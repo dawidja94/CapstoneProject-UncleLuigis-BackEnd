@@ -61,14 +61,12 @@ namespace RestaurantWebAPI.Services
                         }
                     }
 
-                    
-
                     // Logic for tables for 6. There are 6 tables like this.
                     for (int j = 0; j < 6; j++)
                     {
+                        int number = j + 1;
                         foreach (var timeSlot in timeSlots)
                         {
-                            int number = j + 1;
                             tableReservations.Add(new TableReservation
                             {
                                 ReservationTable = $"Table #{number}-6",
@@ -79,12 +77,12 @@ namespace RestaurantWebAPI.Services
                         }
                     }
 
-                    // Logic for tables for 4. There are 10 tables like this.
-                    for (int j = 0; j < 10; j++)
+                    // Logic for tables for 4. There are 8 tables like this.
+                    for (int j = 0; j < 8; j++)
                     {
+                        int number = j + 1;
                         foreach (var timeSlot in timeSlots)
                         {
-                            int number = j + 1;
                             tableReservations.Add(new TableReservation
                             {
                                 ReservationTable = $"Table #{number}-4",
@@ -98,29 +96,13 @@ namespace RestaurantWebAPI.Services
                     // Logic for tables for 2 people. There are 6 tables like this.
                     for (int j = 0; j < 6; j++)
                     {
+                        int number = j + 1;
                         foreach (var timeSlot in timeSlots)
                         {
-                            int number = j + 1;
                             tableReservations.Add(new TableReservation
                             {
                                 ReservationTable = $"Table #{number}-2",
                                 TableSize = 2,
-                                TimeSlot = timeSlot,
-                                ReservationDate = dateTime.Date.ToString("MM/dd/yyyy")
-                            });
-                        }
-                    }
-
-                    // Logic for tables for 4 people. There are 4 tables like this.
-                    for (int j = 0; j < 4; j++)
-                    {
-                        foreach (var timeSlot in timeSlots)
-                        {
-                            int number = j + 1;
-                            tableReservations.Add(new TableReservation
-                            {
-                                ReservationTable = $"Table #{number}-4",
-                                TableSize = 4,
                                 TimeSlot = timeSlot,
                                 ReservationDate = dateTime.Date.ToString("MM/dd/yyyy")
                             });
