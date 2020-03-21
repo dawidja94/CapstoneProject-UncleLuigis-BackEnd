@@ -71,7 +71,6 @@ namespace RestaurantWebAPI.Controllers
         }
         //GET: CarryOut/GetCarryOutById/{id}
         [HttpGet("GetCarryOutById/{id}")]
-        [AllowAnonymous]
         public IActionResult GetCarryOutById([FromRoute]int id)
         {
             var request = new GetCarryOutByIdRequest()
