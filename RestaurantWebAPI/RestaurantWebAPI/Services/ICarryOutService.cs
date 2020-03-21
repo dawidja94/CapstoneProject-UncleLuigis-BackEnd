@@ -10,7 +10,9 @@ namespace RestaurantWebAPI.Services
     public interface ICarryOutService
     {
         GetAllCarryOutsInCartResponse GetAllCarryOutsInCart(GetAllCarryOutsInCartRequest request);
+        GetAllCarryOutsForCustomerResponse GetAllCarryOutsForCustomer(GetAllCarryOutsForCustomerRequest request);
         GetAllCarryOutsForDateResponse GetAllCarryOutsForDate(GetAllCarryOutsForDateRequest request);
+        GetCarryOutByIdResponse GetCarryOutById(GetCarryOutByIdRequest request);
         CreateCarryOutResponse CreateCarryOut(CreateCarryOutRequest request);
         UpdateCarryOutResponse UpdateCarryOut(UpdateCarryOutRequest request);
         AddToCartResponse AddToCart(AddToCartRequest request);

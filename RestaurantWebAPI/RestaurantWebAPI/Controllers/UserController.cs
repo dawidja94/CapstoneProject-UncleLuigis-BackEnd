@@ -152,11 +152,11 @@ namespace LogInWebAPI.Controllers
 
                         if (!updateResult.Succeeded)
                         {
-                            return BadRequest("Password wasn't successfully updated.");
+                            return BadRequest(new { message = "Password wasn't successfully updated." });
                         }
                         else if (updateResult.Succeeded)
                         {
-                            return Ok($"Password for username: {model.UserName} was succesfully updated!");
+                            return Ok(new { message = $"Password for username: {model.UserName} was succesfully updated!" });
                         }
                     }
                 }

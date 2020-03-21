@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using RestaurantWebAPI.Data;
 using RestaurantWebAPI.Models.Bodies;
 using RestaurantWebAPI.Models.Entities;
 using RestaurantWebAPI.Models.ServiceRequests;
@@ -12,16 +14,19 @@ using RestaurantWebAPI.Services;
 
 namespace RestaurantWebAPI.Controllers
 {
- 
+
     [ApiController]
     [Authorize]
     [Route("[controller]")]
     public class CarryOutController : ControllerBase
     {
+        private readonly ApplicationDbContext _context;
         private readonly ICarryOutService _carryOutService;
-        public CarryOutController(ICarryOutService carryOutService)
+        
+        public CarryOutController(ICarryOutService carryOutService, ApplicationDbContext context)
         {
             _carryOutService = carryOutService;
+            _context = context;
         }
 
         //GET: CarryOut/GetAllOutsInCart
@@ -46,7 +51,48 @@ namespace RestaurantWebAPI.Controllers
             }
         }
 
-        //GET: CarryOut/GetAllOutsForDate
+        //GET: CarryOut/GetAllCarryOutsForCustomer/{id}
+        [HttpGet("GetAllCarryOutsForCustomer/{id}")]
+        public IActionResult GetAllCarryOutsForCustomer(int id)
+        {
+            var request = new GetAllCarryOutsForCustomerRequest() {
+                CustomerId = id
+            };
+            var response = _carryOutService.GetAllCarryOutsForCustomer(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok(response.CarryOuts);
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
+        //GET: CarryOut/GetCarryOutById/{id}
+        [HttpGet("GetCarryOutById/{id}")]
+        [AllowAnonymous]
+        public IActionResult GetCarryOutById([FromRoute]int id)
+        {
+            var request = new GetCarryOutByIdRequest()
+            {
+                BundleId = id
+            };
+
+            var response = _carryOutService.GetCarryOutById(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok(response.CarryOuts);
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+
+        }
+
+        //GET: CarryOut/GetAllCarryOutsForDate
         [HttpGet("GetAllCarryOutsForDate")]
         public IActionResult GetAllCarryOutsForDate()
         {
