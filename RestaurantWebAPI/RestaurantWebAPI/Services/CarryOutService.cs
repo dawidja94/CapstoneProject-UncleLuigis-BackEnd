@@ -76,6 +76,7 @@ namespace RestaurantWebAPI.Services
                 var distinctRecords = carryOuts
                    .GroupBy(x => x.BundleId)
                    .Select(x => x.First())
+                   .OrderByDescending(x => x.BundleId)
                    .ToList();
           
                 carryOuts = distinctRecords;
@@ -104,6 +105,7 @@ namespace RestaurantWebAPI.Services
                 var carryOuts = _context.CarryOuts
                     .Include(x => x.Food)
                     .Include(x => x.Beverage)
+                    .Include(x => x.Customer)
                     .Where(x => x.BundleId == request.BundleId)
                     .Where(x => x.SubmissionTime != null)
                     .ToList();
