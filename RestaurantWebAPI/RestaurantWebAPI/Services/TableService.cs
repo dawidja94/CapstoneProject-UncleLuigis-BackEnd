@@ -112,6 +112,8 @@ namespace RestaurantWebAPI.Services
 
                 _context.AddRange(tableReservations);
                 _context.SaveChanges();
+                response.IsSuccessful = true;
+                response.Message = "Successsfully queried available table reservations.";
             }
             catch (Exception ex)
             {
@@ -121,7 +123,45 @@ namespace RestaurantWebAPI.Services
 
         public CreateTableReservationResponse CreateTableReservation(CreateTableReservationRequest request)
         {
-            throw new NotImplementedException();
+            var response = new CreateTableReservationResponse
+            {
+                IsSuccessful = false,
+                Message = ""
+            };
+
+            try
+            {
+                var table = _context.TableReservations
+                    .Include(x => x.Customer)
+                    .FirstOrDefault(x => x.Id == request.TableId);
+
+                if (table != null)
+                {
+                    // Start tracking entity.
+                    _context.Update(table);
+
+                    if (table.Customer == null)
+                    {
+                        // Look up the customer.
+                        var customer = _context.Customers
+                            .FirstOrDefault(x => x.Id == request.CustomerId);
+
+                        table.Customer = customer;
+                        table.PartySize = request.PartySize;
+
+                        _context.SaveChanges();
+                        response.IsSuccessful = true;
+                        response.Message = "Successfully created table reservation.";
+                        response.Reservation = table;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.ToString();
+            }
+
+            return response;
         }
 
         public GetAvailableTableReservationsResponse GetAvailableTableReservations(GetAvailableTableReservationsRequest request)
