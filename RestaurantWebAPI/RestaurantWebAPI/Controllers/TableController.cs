@@ -69,7 +69,6 @@ namespace RestaurantWebAPI.Controllers
         }
 
         // GET: Table/GetCustomerReservations/{id}
-        [Authorize]
         [HttpGet("GetCustomerReservations/{id}")]
         public IActionResult GetCustomerReservations([FromRoute] int id)
         {

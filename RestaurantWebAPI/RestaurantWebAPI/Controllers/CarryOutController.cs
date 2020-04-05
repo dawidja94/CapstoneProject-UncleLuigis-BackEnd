@@ -89,7 +89,6 @@ namespace RestaurantWebAPI.Controllers
             {
                 return BadRequest(response.Message);
             }
-
         }
 
         //GET: CarryOut/GetAllCarryOutsForDate
