@@ -67,5 +67,27 @@ namespace RestaurantWebAPI.Controllers
                 return BadRequest();
             }
         }
+
+        // GET: Table/GetCustomerReservations/{id}
+        [Authorize]
+        [HttpGet("GetCustomerReservations/{id}")]
+        public IActionResult GetCustomerReservations([FromRoute] int id)
+        {
+            var request = new GetTableReservationsByCustomerRequest
+            {
+                CustomerId = id
+            };
+
+            var response = _tableService.GetTableReservationsByCustomer(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok(response.Reservations);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
     }
 }

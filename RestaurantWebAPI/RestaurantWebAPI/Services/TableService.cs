@@ -148,6 +148,7 @@ namespace RestaurantWebAPI.Services
 
                         table.Customer = customer;
                         table.PartySize = request.PartySize;
+                        table.SubmissionTime = DateTime.Now;
 
                         _context.SaveChanges();
                         response.IsSuccessful = true;
@@ -221,10 +222,7 @@ namespace RestaurantWebAPI.Services
             try
             {
                 var customer = _context.Customers
-                    .Where(x => x.FirstName == request.Customer.FirstName)
-                    .Where(x => x.LastName == request.Customer.LastName)
-                    .Where(x => x.Email == request.Customer.Email)
-                    .Where(x => x.PhoneNumber == request.Customer.PhoneNumber)
+                    .Where(x => x.Id == request.CustomerId)
                     .FirstOrDefault();
 
                 if (customer != null)
@@ -232,6 +230,7 @@ namespace RestaurantWebAPI.Services
                     var reservations = _context.TableReservations
                         .Include(x => x.Customer)
                         .Where(x => x.Customer.Id == customer.Id)
+                        .OrderByDescending(x => x.SubmissionTime)
                         .ToList();
 
                     response.Reservations = reservations;

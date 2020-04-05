@@ -8,6 +8,6 @@ namespace RestaurantWebAPI.Models.ServiceRequests
 {
     public class GetTableReservationsByCustomerRequest : BaseServiceRequest
     {
-        public Customer Customer { get; set; }
+        public int CustomerId { get; set; }
     }
 }
