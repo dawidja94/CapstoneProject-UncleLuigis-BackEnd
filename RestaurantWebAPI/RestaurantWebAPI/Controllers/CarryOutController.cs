@@ -110,6 +110,7 @@ namespace RestaurantWebAPI.Controllers
 
         //POST: CarryOut/CreateCarryOut
         [HttpPost("CreateCarryOut")]
+        [Authorize]
         public IActionResult CreateCarryOut([FromBody]CustomerBody body)
         {
             var request = new CreateCarryOutRequest

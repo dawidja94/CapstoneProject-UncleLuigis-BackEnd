@@ -13,5 +13,6 @@ namespace RestaurantWebAPI.Services
         GetTableReservationsByCustomerResponse GetTableReservationsByCustomer(GetTableReservationsByCustomerRequest request);
         CreateTableReservationResponse CreateTableReservation(CreateTableReservationRequest request);
         UpdateTableReservationResponse UpdateTableReservation(UpdateTableReservationRequest request);
+        GetReservationResponse GetReservation(GetReservationRequest request);
     }
 }

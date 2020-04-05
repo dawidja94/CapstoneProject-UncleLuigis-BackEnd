@@ -250,5 +250,35 @@ namespace RestaurantWebAPI.Services
         {
             throw new NotImplementedException();
         }
+
+        public GetReservationResponse GetReservation(GetReservationRequest request)
+        {
+            var response = new GetReservationResponse
+            {
+                IsSuccessful = false,
+                Message = ""
+            };
+
+            try
+            {
+                var reservation = _context.TableReservations
+                    .FirstOrDefault(x => x.Id == request.ReservationId);
+
+                
+                if (reservation != null)
+                {
+                    response.TableReservation = reservation;
+                    response.IsSuccessful = true;
+                    response.Message = "Successfully found reservation.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccessful = false;
+                response.Message = ex.ToString();
+            }
+
+            return response;
+        }
     }
 }
