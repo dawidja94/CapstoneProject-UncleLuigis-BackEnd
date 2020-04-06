@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantWebAPI.Models.ServiceResponses
 {
-    public class UpdateTableReservationResponse
+    public class UpdateTableReservationResponse : BaseServiceResponse
     {
         public TableReservation Table { get; set; }
     }

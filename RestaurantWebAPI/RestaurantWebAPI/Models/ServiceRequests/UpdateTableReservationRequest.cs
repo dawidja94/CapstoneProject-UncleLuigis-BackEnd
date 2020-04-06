@@ -8,6 +8,7 @@ namespace RestaurantWebAPI.Models.ServiceRequests
 {
     public class UpdateTableReservationRequest : BaseServiceRequest
     {
-        public TableReservation Reservation { get; set; }
+        public int ReservationId { get; set; }
+        public int CustomerId { get; set; }
     }
 }

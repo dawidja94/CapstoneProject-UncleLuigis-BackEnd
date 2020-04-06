@@ -248,7 +248,40 @@ namespace RestaurantWebAPI.Services
 
         public UpdateTableReservationResponse UpdateTableReservation(UpdateTableReservationRequest request)
         {
-            throw new NotImplementedException();
+            var response = new UpdateTableReservationResponse
+            {
+                IsSuccessful = false,
+                Table = null
+            };
+
+            try
+            {
+                var customer = _context.Customers
+                    .FirstOrDefault(x => x.Id == request.CustomerId);
+
+                var reservation = _context.TableReservations
+                    .Include(x => x.Customer)
+                    .Where(x => x.Customer.FirstName == customer.FirstName)
+                    .Where(x => x.Customer.LastName == customer.LastName)
+                    .Where(x => x.Customer.Id == customer.Id)
+                    .FirstOrDefault(x => x.Id == request.ReservationId);
+
+                _context.Update(reservation);
+
+                reservation.Customer = null;
+                reservation.SubmissionTime = null;
+
+                _context.SaveChanges();
+                response.IsSuccessful = true;
+                response.Message = $"Successfully cancelled table reservation with Id: {reservation.Id}.";
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccessful = false;
+                response.Message = ex.ToString();
+            }
+
+            return response;
         }
 
         public GetReservationResponse GetReservation(GetReservationRequest request)
@@ -261,9 +294,15 @@ namespace RestaurantWebAPI.Services
 
             try
             {
-                var reservation = _context.TableReservations
-                    .FirstOrDefault(x => x.Id == request.ReservationId);
+                var customer = _context.Customers
+                    .FirstOrDefault(x => x.Id == request.CustomerId);
 
+                var reservation = _context.TableReservations
+                    .Include(x => x.Customer)
+                    .Where(x => x.Customer.FirstName == customer.FirstName)
+                    .Where(x => x.Customer.LastName == customer.LastName)
+                    .Where(x => x.Customer.Id == customer.Id)
+                    .FirstOrDefault(x => x.Id == request.ReservationId);
                 
                 if (reservation != null)
                 {

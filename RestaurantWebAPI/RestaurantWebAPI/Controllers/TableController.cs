@@ -89,13 +89,14 @@ namespace RestaurantWebAPI.Controllers
             }
         }
 
-        // GET: Table/GetReservation/{id}
-        [HttpGet("GetReservation/{id}")]
-        public IActionResult GetReservation([FromRoute] int id)
+        // POST: Table/GetReservation
+        [HttpPost("GetReservation")]
+        public IActionResult GetReservation(ReserveTableBody body)
         {
             var request = new GetReservationRequest
             {
-                ReservationId = id
+                ReservationId = body.TableId,
+                CustomerId = body.CustomerId
             };
 
             var response = _tableService.GetReservation(request);
@@ -103,6 +104,29 @@ namespace RestaurantWebAPI.Controllers
             if (response.IsSuccessful)
             {
                 return Ok(response.TableReservation);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        // PUT: Table/CancelReservation
+        [HttpPut("CancelReservation")]
+        [Authorize]
+        public IActionResult CancelReservation(ReserveTableBody body)
+        {
+            var request = new UpdateTableReservationRequest
+            {
+                CustomerId = body.CustomerId,
+                ReservationId = body.TableId
+            };
+
+            var response = _tableService.UpdateTableReservation(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok(response);
             }
             else
             {
