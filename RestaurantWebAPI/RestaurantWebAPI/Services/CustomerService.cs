@@ -124,20 +124,22 @@ namespace RestaurantWebAPI.Services
             try
             {
                 var customerToUpdate = _context.Customers
-                        .Where(x => x.FirstName == request.CustomerToUpdate.FirstName)
-                        .Where(x => x.LastName == request.CustomerToUpdate.LastName)
-                        .Where(x => x.PhoneNumber == request.CustomerToUpdate.PhoneNumber)
+                        .Where(x => x.Id == request.CustomerToUpdate.Id)
                         .FirstOrDefault();
 
                 if (customerToUpdate != null)
                 {
                     customerToUpdate.Email = request.CustomerToUpdate.Email;
                     customerToUpdate.PhoneNumber = request.CustomerToUpdate.PhoneNumber;
+
+                    _context.SaveChanges();
+                    response.IsSuccessful = true;
                 }                 
             }
             catch (Exception ex)
             {
                 response.Message = ex.ToString();
+
             }
             return response;
         }

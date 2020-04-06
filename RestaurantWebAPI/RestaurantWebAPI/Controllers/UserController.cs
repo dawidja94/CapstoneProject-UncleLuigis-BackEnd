@@ -164,7 +164,7 @@ namespace LogInWebAPI.Controllers
 
             return NotFound();
         }
-
+      
         [HttpPut("ForgetPassword")]
         // PUT: /User/ForgetPassword
         public async Task<IActionResult> ForgetPassword([FromBody]ForgetPasswordModel model)
