@@ -53,6 +53,7 @@ namespace RestaurantWebAPI.Controllers
 
         //GET: CarryOut/GetAllCarryOutsForCustomer/{id}
         [HttpGet("GetAllCarryOutsForCustomer/{id}")]
+        [AllowAnonymous]
         public IActionResult GetAllCarryOutsForCustomer(int id)
         {
             var request = new GetAllCarryOutsForCustomerRequest() {
