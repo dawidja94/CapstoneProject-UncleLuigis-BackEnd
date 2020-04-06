@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantWebAPI.Models.Bodies;
 using RestaurantWebAPI.Models.ServiceRequests;
@@ -36,6 +37,72 @@ namespace RestaurantWebAPI.Controllers
             if (response.IsSuccessful)
             {
                 return Ok(response.Reservations);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        // POST: Table/ReserveTable
+        [Authorize]
+        [HttpPost("ReserveTable")]
+        public IActionResult ReserveTable(ReserveTableBody body)
+        {
+            var request = new CreateTableReservationRequest
+            {
+                CustomerId = body.CustomerId,
+                PartySize = body.PartySize,
+                TableId = body.TableId
+            };
+
+            var response = _tableService.CreateTableReservation(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok(response.Reservation);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        // GET: Table/GetCustomerReservations/{id}
+        [HttpGet("GetCustomerReservations/{id}")]
+        public IActionResult GetCustomerReservations([FromRoute] int id)
+        {
+            var request = new GetTableReservationsByCustomerRequest
+            {
+                CustomerId = id
+            };
+
+            var response = _tableService.GetTableReservationsByCustomer(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok(response.Reservations);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        // GET: Table/GetReservation/{id}
+        [HttpGet("GetReservation/{id}")]
+        public IActionResult GetReservation([FromRoute] int id)
+        {
+            var request = new GetReservationRequest
+            {
+                ReservationId = id
+            };
+
+            var response = _tableService.GetReservation(request);
+
+            if (response.IsSuccessful)
+            {
+                return Ok(response.TableReservation);
             }
             else
             {

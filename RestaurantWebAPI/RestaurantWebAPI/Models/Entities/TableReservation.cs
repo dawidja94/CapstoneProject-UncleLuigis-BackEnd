@@ -21,6 +21,6 @@ namespace RestaurantWebAPI.Models.Entities
         [Required]
         public string ReservationDate { get; set; }
         public string TimeSlot { get; set; }
+        public DateTime? SubmissionTime { get; set; }
     }
-
 }

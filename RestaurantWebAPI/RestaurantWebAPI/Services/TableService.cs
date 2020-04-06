@@ -112,6 +112,8 @@ namespace RestaurantWebAPI.Services
 
                 _context.AddRange(tableReservations);
                 _context.SaveChanges();
+                response.IsSuccessful = true;
+                response.Message = "Successsfully queried available table reservations.";
             }
             catch (Exception ex)
             {
@@ -121,7 +123,46 @@ namespace RestaurantWebAPI.Services
 
         public CreateTableReservationResponse CreateTableReservation(CreateTableReservationRequest request)
         {
-            throw new NotImplementedException();
+            var response = new CreateTableReservationResponse
+            {
+                IsSuccessful = false,
+                Message = ""
+            };
+
+            try
+            {
+                var table = _context.TableReservations
+                    .Include(x => x.Customer)
+                    .FirstOrDefault(x => x.Id == request.TableId);
+
+                if (table != null)
+                {
+                    // Start tracking entity.
+                    _context.Update(table);
+
+                    if (table.Customer == null)
+                    {
+                        // Look up the customer.
+                        var customer = _context.Customers
+                            .FirstOrDefault(x => x.Id == request.CustomerId);
+
+                        table.Customer = customer;
+                        table.PartySize = request.PartySize;
+                        table.SubmissionTime = DateTime.Now;
+
+                        _context.SaveChanges();
+                        response.IsSuccessful = true;
+                        response.Message = "Successfully created table reservation.";
+                        response.Reservation = table;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.ToString();
+            }
+
+            return response;
         }
 
         public GetAvailableTableReservationsResponse GetAvailableTableReservations(GetAvailableTableReservationsRequest request)
@@ -181,10 +222,7 @@ namespace RestaurantWebAPI.Services
             try
             {
                 var customer = _context.Customers
-                    .Where(x => x.FirstName == request.Customer.FirstName)
-                    .Where(x => x.LastName == request.Customer.LastName)
-                    .Where(x => x.Email == request.Customer.Email)
-                    .Where(x => x.PhoneNumber == request.Customer.PhoneNumber)
+                    .Where(x => x.Id == request.CustomerId)
                     .FirstOrDefault();
 
                 if (customer != null)
@@ -192,6 +230,7 @@ namespace RestaurantWebAPI.Services
                     var reservations = _context.TableReservations
                         .Include(x => x.Customer)
                         .Where(x => x.Customer.Id == customer.Id)
+                        .OrderByDescending(x => x.SubmissionTime)
                         .ToList();
 
                     response.Reservations = reservations;
@@ -210,6 +249,36 @@ namespace RestaurantWebAPI.Services
         public UpdateTableReservationResponse UpdateTableReservation(UpdateTableReservationRequest request)
         {
             throw new NotImplementedException();
+        }
+
+        public GetReservationResponse GetReservation(GetReservationRequest request)
+        {
+            var response = new GetReservationResponse
+            {
+                IsSuccessful = false,
+                Message = ""
+            };
+
+            try
+            {
+                var reservation = _context.TableReservations
+                    .FirstOrDefault(x => x.Id == request.ReservationId);
+
+                
+                if (reservation != null)
+                {
+                    response.TableReservation = reservation;
+                    response.IsSuccessful = true;
+                    response.Message = "Successfully found reservation.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccessful = false;
+                response.Message = ex.ToString();
+            }
+
+            return response;
         }
     }
 }

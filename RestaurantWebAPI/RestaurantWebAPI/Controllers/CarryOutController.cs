@@ -90,7 +90,6 @@ namespace RestaurantWebAPI.Controllers
             {
                 return BadRequest(response.Message);
             }
-
         }
 
         //GET: CarryOut/GetAllCarryOutsForDate
@@ -112,6 +111,7 @@ namespace RestaurantWebAPI.Controllers
 
         //POST: CarryOut/CreateCarryOut
         [HttpPost("CreateCarryOut")]
+        [Authorize]
         public IActionResult CreateCarryOut([FromBody]CustomerBody body)
         {
             var request = new CreateCarryOutRequest

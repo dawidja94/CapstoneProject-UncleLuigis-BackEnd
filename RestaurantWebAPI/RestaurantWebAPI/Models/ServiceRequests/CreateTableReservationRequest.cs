@@ -8,6 +8,8 @@ namespace RestaurantWebAPI.Models.ServiceRequests
 {
     public class CreateTableReservationRequest : BaseServiceRequest
     {
-        public TableReservation Reservation { get; set; }
+        public int TableId { get; set; }
+        public int CustomerId { get; set; }
+        public int PartySize { get; set; }
     }
 }
