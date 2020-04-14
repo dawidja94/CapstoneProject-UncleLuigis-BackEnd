@@ -79,7 +79,7 @@ namespace RestaurantWebAPI.Controllers
 
             if (response.IsSuccessful)
             {
-                return Ok();
+                return Ok(new { IsSuccessful = response.IsSuccessful });
             }
             else
             {
