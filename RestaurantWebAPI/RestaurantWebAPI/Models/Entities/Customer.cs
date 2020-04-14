@@ -14,12 +14,10 @@ namespace RestaurantWebAPI.Models.Entities
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        [Required]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
-        [Required]
-        public DateTime MemberSince { get; set; }
+        public DateTime? MemberSince { get; set; }
         [Required]
         public string Email { get; set; }
     }
