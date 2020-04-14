@@ -209,23 +209,34 @@ namespace RestaurantWebAPI.Services
 
             try
             {
-                // Might break, felt cute, might delete later??
                 var carryOutToUpdate = _context.CarryOuts
                     .Include(x => x.Customer)
-                    .Where(x => x.BundleId == request.CarryOutToUpdate[0].BundleId)
-                    .ToList();
+                    .Where(x => x.Id == request.Id)
+                    .Where(x => x.Customer.Id == request.CustomerId)
+                    .FirstOrDefault();
 
-                // Update each carry out with the beverage/food in the request.
-                for (int i = 0; i < carryOutToUpdate.Count; i++)
+                _context.Update(carryOutToUpdate);
+
+                if (request.FoodQuantity != -99)
                 {
-                    carryOutToUpdate[i].Beverage = request.CarryOutToUpdate[i].Beverage;
-                    carryOutToUpdate[i].BeverageQuantity = request.CarryOutToUpdate[i].BeverageQuantity;
-                    carryOutToUpdate[i].Food = request.CarryOutToUpdate[i].Food;
-                    carryOutToUpdate[i].FoodQuantity = request.CarryOutToUpdate[i].FoodQuantity;
+                    carryOutToUpdate.FoodQuantity = request.FoodQuantity;
+
+                }
+                else if (request.BeverageQuantity != -99)
+                {
+                    carryOutToUpdate.BeverageQuantity = request.BeverageQuantity;
+
                 }
 
-                _context.UpdateRange(carryOutToUpdate);
+                if (request.FoodQuantity == 0 || request.BeverageQuantity == 0)
+                {
+                    _context.Remove(carryOutToUpdate);
+                }
+
                 _context.SaveChanges();
+
+                response.IsSuccessful = true;
+                response.Message = "Successfully updated Carry Out item.";
             }
             catch (Exception ex)
             {

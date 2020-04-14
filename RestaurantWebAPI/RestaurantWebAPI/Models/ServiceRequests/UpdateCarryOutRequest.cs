@@ -8,6 +8,13 @@ namespace RestaurantWebAPI.Models.ServiceRequests
 {
     public class UpdateCarryOutRequest
     {
-        public List<CarryOut> CarryOutToUpdate { get; set; }
+        public int Id { get; set; }
+        public int BundleId { get; set; }
+        public int CustomerId { get; set; }
+        public Food Food { get; set; }
+        public int FoodQuantity { get; set; }
+        public Beverage Beverage { get; set; }
+        public int BeverageQuantity { get; set; }
+        public DateTime? SubmissionTime { get; set; }
     }
 }

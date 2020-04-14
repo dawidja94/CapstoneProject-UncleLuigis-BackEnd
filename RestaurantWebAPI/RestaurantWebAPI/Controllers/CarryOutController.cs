@@ -176,11 +176,18 @@ namespace RestaurantWebAPI.Controllers
 
         //PUT: CarryOut/UpdateCarryOut
         [HttpPut("UpdateCarryOut")]
-        public IActionResult UpdateCarryOut(List<CarryOut> body)
+        public IActionResult UpdateCarryOut(CarryOutBody body)
         {
             var request = new UpdateCarryOutRequest
             {
-                CarryOutToUpdate = body
+                Beverage = body.Beverage,
+                BeverageQuantity = body.BeverageQuantity,
+                BundleId = body.BundleId,
+                CustomerId = body.CustomerId,
+                Food = body.Food,
+                FoodQuantity = body.FoodQuantity,
+                Id = body.Id,
+                SubmissionTime = body.SubmissionTime
             };
 
             var response = _carryOutService.UpdateCarryOut(request);
