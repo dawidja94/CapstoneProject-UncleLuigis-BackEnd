@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RestaurantWebAPI.Models.Entities;
@@ -40,6 +41,7 @@ namespace RestaurantWebAPI.Controllers
 
         // POST: Food/CreateFoodItem
         [HttpPost("CreateFoodItem")]
+        [Authorize]
         public IActionResult CreateFoodItem(Food body)
         {
             var request = new CreateFoodItemRequest
@@ -61,6 +63,7 @@ namespace RestaurantWebAPI.Controllers
 
         // PUT: Food/UpdateFoodItem
         [HttpPut("UpdateFoodItem")]
+        [Authorize]
         public IActionResult UpdateFoodItem(Food body)
         {
             var request = new UpdateFoodItemRequest
@@ -81,6 +84,7 @@ namespace RestaurantWebAPI.Controllers
         }
         // DELETE: Food/DeleteFoodItem
         [HttpDelete("DeleteFoodItem/{id}")]
+        [Authorize]
         public IActionResult DeleteFoodItem([FromRoute]int id)
         {
             var request = new DeleteFoodItemRequest

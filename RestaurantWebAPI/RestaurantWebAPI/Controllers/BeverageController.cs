@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantWebAPI.Models.Entities;
@@ -41,6 +42,7 @@ namespace RestaurantWebAPI.Controllers
         //POST: Beverage/CreateBeverageItem
         // Tested and verified logic 02/08/2020 - Dawid
         [HttpPost("CreateBeverageItem")]
+        [Authorize]
         public IActionResult CreateBeverageItem(Beverage body)
         {
             var request = new CreateBeverageItemRequest
@@ -63,6 +65,7 @@ namespace RestaurantWebAPI.Controllers
         //PUT: Beverage/UpdateBeverageItem
         // Tested and verified logic 02/08/2020 - Dawid
         [HttpPut("UpdateBeverageItem")]
+        [Authorize]
         public IActionResult UpdateBeverageItem(Beverage body)
         {
             var request = new UpdateBeverageItemRequest
@@ -85,6 +88,7 @@ namespace RestaurantWebAPI.Controllers
         //DELETE : Beverage/DeleteBeverageItem
         // Tested and verified logic 02/08/2020 - Dawid
         [HttpDelete("DeleteBeverageItem/{id}")]
+        [Authorize]
         public IActionResult DeleteBeverageItem([FromRoute] int id)
         {
             var request = new DeleteBeverageItemRequest
